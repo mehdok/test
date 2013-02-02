@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/servlet-api.jar" sourcepath="C:/Program Files/Apache Software Foundation/apache-tomcat-7.0.35-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/docs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 7.0/lib/jsp-api.jar"/>
+	<classpathentry kind="output" path="web/WEB-INF/classes"/>
+</classpath>
