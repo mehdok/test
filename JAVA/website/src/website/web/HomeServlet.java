@@ -1,9 +1,9 @@
 package website.web;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URL;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
+
+
 
 public class HomeServlet extends HttpServlet
 {
@@ -47,14 +52,48 @@ public class HomeServlet extends HttpServlet
 	*/
 	
 	private Logger logger = Logger.getLogger(this.getClass());
+	
+	private RequestDispatcher homeJsp;
+	
+	public void init(ServletConfig config) throws ServletException
+	{
+		ServletContext context = config.getServletContext();
+		homeJsp = context.getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+	}
 
-	@Override
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException 
 	{
-		PrintWriter writer = resp.getWriter();
-		writer.println("<h!>Hello, World</h1>");
-		logger.debug("HomeServlet.doGet()");
+		//PrintWriter writer = resp.getWriter();
+		//writer.println("<h!>Hello, World</h1>");
+		//logger.debug("HomeServlet.doGet()");
+		//req.setAttribute("message", "bye");
+		//homeJsp.forward(req, resp);
+		
+		/* reading rss */
+		logger.debug("Retriving yahoo news feed");
+		URL url = new URL("http://rss.news.yahoo.com/rss/entertainment");
+		SyndFeedInput syndInputFeed = new SyndFeedInput();
+		SyndFeed syndFeed = null;
+		XmlReader xmlReader = new XmlReader(url);
+		try
+		{
+			syndFeed = syndInputFeed.build(xmlReader);
+		}
+		catch (IllegalArgumentException e)
+		{
+			logger.error("", e);
+		}
+		catch (FeedException e)
+		{
+			logger.error("", e);
+		}
+		
+		logger.debug("Forwarding to home.jsp");
+		req.setAttribute("SyndFeed", syndFeed);
+		homeJsp.forward(req, resp);
+		
 	}
 	
 }
